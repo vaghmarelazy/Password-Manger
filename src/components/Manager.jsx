@@ -1,14 +1,14 @@
 import { useState } from "react";
 
 function Manager() {
-  const [isHover, setIsHover] = useState(false);
-
-  function handleMouseEnter() {
-    setIsHover(true);
+  const [eye, setEye] = useState(true);
+  
+  function Action() {
+    setEye(!eye);
   }
 
-  function handleMouseLeave() {
-    setIsHover(false);
+  function savePassword(){
+
   }
 
   return (
@@ -30,29 +30,42 @@ function Manager() {
         <div className="p-4 flex flex-col items-center text-black gap-8">
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Enter Website Name or URL"
             className="border border-green-500 py-1 px-4 rounded-full w-full"
           />
-          <div className="flex w-full gap-8">
+          <div className="flex w-full gap-5">
             <input
               type="text"
-              placeholder="username"
-              className="border border-green-500 py-1 px-4 rounded-full w-full"
+              placeholder="Enter Username"
+              className="border border-green-500 py-1 px-4 rounded-full w-3/5"
             />
-            <input
-              type="text"
-              placeholder="password"
-              className="border border-green-500 py-1 px-4 rounded-full w-full"
-            />
+            <div className="relative w-2/5">
+              <input
+                type={eye?"password":"text"}
+                placeholder="Enter Password"
+                className="border border-green-500 py-1 px-4 rounded-full w-full "
+              />
+              <span
+                className={`absolute right-0 cursor-pointer duration-100 ${
+                  eye ? "top-1" : "top-0"
+                }`}
+                onClick={Action}
+              >
+                <img
+                  src={eye ? "/eye.png" : "/eyeopened.png"}
+                  alt="closed eye"
+                  className="w-8 mr-2 py-auto h-full"
+                />
+              </span>
+            </div>
           </div>
           <button
             className="bg-green-600 rounded-full flex items-center justify-center w-fit px-4 py-2 hover:bg-green-400 duration-150 gap-1"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onClick={savePassword}
           >
             <lord-icon
               src="https://cdn.lordicon.com/jgnvfzqg.json"
-              trigger={isHover ? "hover" : "morph"}
+              trigger="hover"
             ></lord-icon>
             Add Password
           </button>
