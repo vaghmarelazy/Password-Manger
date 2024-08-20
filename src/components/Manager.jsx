@@ -4,7 +4,12 @@ function Manager() {
   const [eye, setEye] = useState(true);
   const [form, setForm] = useState({ site: "", username: "", password: "" });
   const [passwordArray, setPasswordArray] = useState([]);
-  const [errors, setErrors] = useState({ site: false, username: false, password: false });
+  const [errors, setErrors] = useState({
+    site: false,
+    username: false,
+    password: false,
+  });
+  const [visibility, setVisibility] = useState(false)
 
   function Action() {
     setEye(!eye);
@@ -70,7 +75,9 @@ function Manager() {
               } py-1 px-4 rounded-full w-full`}
             />
             {errors.site && (
-              <p className="text-red-500 text-sm mt-1">This field is required</p>
+              <p className="text-red-500 text-sm mt-1">
+                This field is required
+              </p>
             )}
           </div>
 
@@ -87,7 +94,9 @@ function Manager() {
                 } py-1 px-4 rounded-full w-full`}
               />
               {errors.username && (
-                <p className="text-red-500 text-sm mt-1">This field is required</p>
+                <p className="text-red-500 text-sm mt-1">
+                  This field is required
+                </p>
               )}
             </div>
 
@@ -101,9 +110,14 @@ function Manager() {
                 className={`border ${
                   errors.password ? "border-red-500" : "border-green-500"
                 } py-1 px-4 rounded-full w-full`}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    savePassword(); // Call the savePassword function when Enter is pressed
+                  }
+                }}
               />
               <span
-                className={`absolute right-0 cursor-pointer duration-100 top-1`}
+                className={`absolute right-1 cursor-pointer duration-100 `}
                 onClick={Action}
               >
                 <img
@@ -113,7 +127,9 @@ function Manager() {
                 />
               </span>
               {errors.password && (
-                <p className="text-red-500 text-sm mt-1">This field is required</p>
+                <p className="text-red-500 text-sm mt-1">
+                  This field is required
+                </p>
               )}
             </div>
           </div>
@@ -139,7 +155,7 @@ function Manager() {
           )}
           {passwordArray.length !== 0 && (
             <div className="password">
-              <h2 className="font-bold">Your Passwords</h2>
+              <h2 className="font-bold underline decoration-gray-900 text-xl">Your Passwords</h2>
               <table className="table-fixed w-full overflow-hidden rounded-xl gap-2">
                 <thead className="bg-green-600 text-white text-lg">
                   <tr>
@@ -150,16 +166,35 @@ function Manager() {
                 </thead>
                 <tbody className="text-center bg-green-100">
                   {passwordArray.map((e, index) => (
-                    <tr key={index} className="mt-2">
+                    <tr key={index} className="h-10 relative">
                       <td>{e.site}</td>
                       <td>{e.username}</td>
-                      <td className="flex items-center justify-center">
-                        {e.password}
-                        <lord-icon
-                          src="https://cdn.lordicon.com/wpyrrmcq.json"
-                          trigger="hover"
-                          style={{ cursor: "pointer", marginLeft: "10px" }}
-                        ></lord-icon>
+                      <td className="flex items-center justify-between">
+                        {/* <p className="w-[75%]">{e.password}</p> */}
+                        <input
+                          type={visibility?"text":"password"}
+                          value={e.password}
+                          className="bg-inherit w-[50%]"
+                        />
+                        <div className="w-[30%] flex">
+                          <lord-icon
+                            src="/Eye.json"
+                            trigger="hover"
+                            style={{ cursor: "pointer", top: "3px" }}
+                            onMouseEnter={()=>setVisibility(true)}
+                            onMouseLeave={()=>setVisibility(false)}
+                          ></lord-icon>
+                          <lord-icon
+                            src="/copy.json"
+                            trigger="hover"
+                            style={{ cursor: "pointer" }}
+                          ></lord-icon>
+                          <lord-icon
+                            src="/delete.json"
+                            trigger="hover"
+                            style={{ cursor: "pointer" }}
+                          ></lord-icon>
+                        </div>
                       </td>
                     </tr>
                   ))}
