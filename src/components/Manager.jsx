@@ -88,7 +88,7 @@ function Manager() {
           Your own Password Manager
         </p>
 
-        <div className="p-4 flex flex-col items-center text-black gap-8">
+        <div className="p-4 flex flex-col items-center text-black gap-4 sm:gap-8">
           <div className="w-full">
             <input
               value={form.site}
@@ -175,13 +175,13 @@ function Manager() {
         <div className="password">
           {passwordArray.length === 0 && (
             <div className="text-center flex flex-col items-center">
-              <p>No Passwords to show</p>
-              <img className="w-1/5" src="/searching-data.svg" alt="" />
+              <p>No Saved Passwords to show !</p>
+              <img className="w-52 sm:w-[25%]" src="/searching-data.svg" alt="" />
             </div>
           )}
           {passwordArray.length !== 0 && (
             <div className="password">
-              <h2 className="font-bold underline decoration-gray-900 text-xl">
+              <h2 className="font-bold text-slate-800 text-md w-full text-center">
                 Your Passwords
               </h2>
               <table className="table-fixed w-full overflow-hidden rounded-xl gap-2">
@@ -189,7 +189,7 @@ function Manager() {
                   <tr>
                     <th>Site</th>
                     <th>Username</th>
-                    <th>Password</th>
+                    <th className="w-3/6 sm:w-auto">Password</th>
                   </tr>
                 </thead>
                 <tbody className="text-center bg-green-100">
@@ -202,9 +202,9 @@ function Manager() {
                           type={visibilityArray[index] ? "text" : "password"}
                           value={e.password}
                           readOnly
-                          className="bg-inherit w-[50%]"
+                          className="bg-inherit w-[60%]"
                         />
-                        <div className="w-[30%] flex">
+                        <div className="w-[40%] sm:w-[30%] flex">
                           <lord-icon
                             src="/Eye.json"
                             style={{ cursor: "pointer", top: "3px" }}
