@@ -8,8 +8,8 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .mycontainer{
-    @apply flex flex-col items-center p-2;
+    @apply flex flex-col items-center px-0  py-16;
   }
 }
