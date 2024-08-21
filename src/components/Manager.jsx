@@ -108,7 +108,7 @@ function Manager() {
           </div>
 
           <div className="flex w-full gap-5">
-            <div className="w-3/5">
+            <div className="w-1/2 sm:w-3/5">
               <input
                 value={form.username}
                 name="username"
@@ -126,7 +126,7 @@ function Manager() {
               )}
             </div>
 
-            <div className="relative w-2/5">
+            <div className="relative w-1/2 sm:w-2/5">
               <input
                 value={form.password}
                 name="password"
