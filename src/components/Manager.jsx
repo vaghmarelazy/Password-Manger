@@ -9,7 +9,7 @@ function Manager() {
     username: false,
     password: false,
   });
-  const [visibility, setVisibility] = useState(false)
+  const [visibilityArray, setVisibilityArray] = useState([]);
 
   function Action() {
     setEye(!eye);
@@ -31,6 +31,9 @@ function Manager() {
       setPasswordArray(updatedPasswordArray);
       localStorage.setItem("password", JSON.stringify(updatedPasswordArray));
       setForm({ site: "", username: "", password: "" }); // Clear form after saving
+
+      // Add visibility state for the new password
+      setVisibilityArray([...visibilityArray, false]);
     }
   }
 
@@ -39,10 +42,33 @@ function Manager() {
     setErrors({ ...errors, [e.target.name]: false }); // Clear error on input change
   }
 
+  function toggleVisibility(index) {
+    const updatedVisibilityArray = [...visibilityArray];
+    updatedVisibilityArray[index] = !updatedVisibilityArray[index];
+    setVisibilityArray(updatedVisibilityArray);
+  }
+
+  function copyToClipboard(password) {
+    navigator.clipboard.writeText(password).then(() => {
+      alert("Password copied to clipboard!");
+    });
+  }
+
+  function deletePassword(index) {
+    const updatedPasswordArray = passwordArray.filter((_, i) => i !== index);
+    const updatedVisibilityArray = visibilityArray.filter((_, i) => i !== index);
+
+    setPasswordArray(updatedPasswordArray);
+    setVisibilityArray(updatedVisibilityArray);
+    localStorage.setItem("password", JSON.stringify(updatedPasswordArray));
+  }
+
   useEffect(() => {
     let password = localStorage.getItem("password");
     if (password) {
-      setPasswordArray(JSON.parse(password));
+      const parsedPasswordArray = JSON.parse(password);
+      setPasswordArray(parsedPasswordArray);
+      setVisibilityArray(new Array(parsedPasswordArray.length).fill(false));
     }
   }, []);
 
@@ -52,7 +78,7 @@ function Manager() {
         <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-fuchsia-400 opacity-20 blur-[100px]"></div>
       </div>
 
-      <div className="mycontainer">
+      <div className="mycontainer sm: ">
         <h1 className="text-4xl font-bold text-center">
           <span className="text-green-700">&lt;</span>
           Pass
@@ -155,7 +181,9 @@ function Manager() {
           )}
           {passwordArray.length !== 0 && (
             <div className="password">
-              <h2 className="font-bold underline decoration-gray-900 text-xl">Your Passwords</h2>
+              <h2 className="font-bold underline decoration-gray-900 text-xl">
+                Your Passwords
+              </h2>
               <table className="table-fixed w-full overflow-hidden rounded-xl gap-2">
                 <thead className="bg-green-600 text-white text-lg">
                   <tr>
@@ -170,29 +198,28 @@ function Manager() {
                       <td>{e.site}</td>
                       <td>{e.username}</td>
                       <td className="flex items-center justify-between">
-                        {/* <p className="w-[75%]">{e.password}</p> */}
                         <input
-                          type={visibility?"text":"password"}
+                          type={visibilityArray[index] ? "text" : "password"}
                           value={e.password}
+                          readOnly
                           className="bg-inherit w-[50%]"
                         />
                         <div className="w-[30%] flex">
                           <lord-icon
                             src="/Eye.json"
-                            trigger="hover"
                             style={{ cursor: "pointer", top: "3px" }}
-                            onMouseEnter={()=>setVisibility(true)}
-                            onMouseLeave={()=>setVisibility(false)}
+                            onClick={() => toggleVisibility(index)}
                           ></lord-icon>
+                          {}
                           <lord-icon
                             src="/copy.json"
-                            trigger="hover"
                             style={{ cursor: "pointer" }}
+                            onClick={() => copyToClipboard(e.password)}
                           ></lord-icon>
                           <lord-icon
                             src="/delete.json"
-                            trigger="hover"
                             style={{ cursor: "pointer" }}
+                            onClick={() => deletePassword(index)}
                           ></lord-icon>
                         </div>
                       </td>
